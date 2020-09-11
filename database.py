@@ -15,28 +15,17 @@ class Database:
         self.notes_db = self.client['notes_db']
         self.notes = self.notes_db['notes']
 
-
-class DatabaseWrite(Database):
-    def __init__(self, tag, title, desc):
-        Database.__init__(self)
-        self.tag = tag
-        self.title = title
-        self.desc = desc
-
-    def add_note(self):
+    def write(self, tag, title, desc):
         time = datetime.now()
         data = {
-            "tag": self.tag,
-            "title": self.title,
-            "desc": self.desc,
+            "tag": tag,
+            "title": title,
+            "desc": desc,
             "time": time
         }
         self.notes.insert_one(data)
 
-
-class DatabaseRead(Database):
-    def __init__(self, **kwargs):
-        Database.__init__(self)
+    def read(self, **kwargs):
         self.tag = kwargs.get('tag', None)
         self.title = kwargs.get('title', None)
         self.desc = kwargs.get('desc', None)

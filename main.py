@@ -1,6 +1,6 @@
 import curses
 from curses.textpad import Textbox, rectangle
-from database import DatabaseRead, DatabaseWrite
+import database
 from utils import parse
 
 
@@ -57,17 +57,15 @@ class Note:
 
 
 if __name__ == "__main__":
-    args = parse()
-    if args.s:
-        search = DatabaseRead()
-        a = search.read_all()
-        for x in a:
-            print(x)
-
+    ARGS = parse()
+    DATABASE = database.Database()
+    if ARGS.s:
+        notes = DATABASE.read_all()
+        for note in notes:
+            print(note)
     else:
-        note = Note(args)
+        note = Note(ARGS)
         note.get_atts()
         my_note = note.get_note()
         tag, title, desc = my_note
-        write = DatabaseWrite(tag, title, desc)
-        write.add_note()
+        DATABASE.write(tag, title, desc)
